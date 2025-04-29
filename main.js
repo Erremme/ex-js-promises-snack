@@ -22,9 +22,19 @@
     return new Promise((resolve, reject)=> {
         fetch(`https://dummyjson.com/posts/${id}`)
         .then((response) => response.json())
-        .then((obj) => resolve(obj))
-        .then((response) => response.json())    
-        .catch(reject)
+        .then((obj) => {
+            fetch(`https://dummyjson.com/users/${obj.userId}`)
+            .then((response) => response.json())
+            .then((user) => {
+                const postWithUser = {
+                    ...obj,
+                    user
+                }
+                resolve(postWithUser)
+            })
+        })
+        
+        .catch(reject)    
 
         
     })
